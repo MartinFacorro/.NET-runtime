@@ -39,12 +39,12 @@ learning-path/es/{level}-{topic-slug}.md   ← Spanish version
 
 You will receive ONE of the following:
 
-| Input type | Example | Expected behavior |
-|---|---|---|
-| **A broad topic** | ".NET Runtime", "ASP.NET Core", "Networking in .NET" | Generate the FULL learning path (all 5 levels) |
-| **A topic + specific level** | "GC — Level 3 (Advanced)" | Generate only that level's module in depth |
-| **A concept** | "Dependency Injection internals" | Determine which level it belongs to, generate that module + prerequisites list |
-| **"index"** | Just the word "index" | Generate the master index (table of contents across all levels and topics) |
+| Input type                   | Example                                              | Expected behavior                                                              |
+| ---------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------ |
+| **A broad topic**            | ".NET Runtime", "ASP.NET Core", "Networking in .NET" | Generate the FULL learning path (all 5 levels)                                 |
+| **A topic + specific level** | "GC — Level 3 (Advanced)"                            | Generate only that level's module in depth                                     |
+| **A concept**                | "Dependency Injection internals"                     | Determine which level it belongs to, generate that module + prerequisites list |
+| **"index"**                  | Just the word "index"                                | Generate the master index (table of contents across all levels and topics)     |
 
 ---
 
@@ -54,7 +54,7 @@ The learning path is organized in **5 progressive levels**. Each level builds on
 
 ```
 Level 1 — FOUNDATIONS        → "I'm new to .NET or coming from another ecosystem"
-Level 2 — PRACTITIONER       → "I build .NET apps daily but don't know what happens underneath"  
+Level 2 — PRACTITIONER       → "I build .NET apps daily but don't know what happens underneath"
 Level 3 — ADVANCED           → "I optimize, debug deep issues, and read framework source sometimes"
 Level 4 — INTERNALS          → "I understand CLR mechanics, JIT behavior, and GC tuning"
 Level 5 — EXPERT / CONTRIBUTOR → "I can debug the runtime itself, contribute patches, extend the VM"
@@ -62,13 +62,13 @@ Level 5 — EXPERT / CONTRIBUTOR → "I can debug the runtime itself, contribute
 
 ### Level descriptors (used in metadata and self-assessment)
 
-| Level | Knowledge profile | Can do | Source code comfort |
-|---|---|---|---|
-| 1 | Knows C# syntax, basic OOP, uses Visual Studio / CLI | Build CRUD apps, use NuGet packages, follow tutorials | Never looked at runtime source |
-| 2 | Understands generics, async/await patterns, DI, middleware pipeline | Design multi-layer applications, write unit tests, use EF Core | Occasionally reads .NET source on GitHub to understand a behavior |
-| 3 | Understands memory model, `Span<T>`, performance profiling, custom middleware | Optimize hot paths, diagnose memory leaks, write custom middleware/filters | Reads BCL source regularly to understand implementation details |
-| 4 | Understands JIT tiering, GC generations/regions, `MethodTable`, type loading | Tune GC for production workloads, analyze JIT output, use `EventPipe`/`dotnet-trace` | Navigates `src/coreclr/` and `src/libraries/` fluently |
-| 5 | Understands VM internals, object layout, P/Invoke marshalling, crossgen2/R2R | Contribute to dotnet/runtime, write custom hosts, debug native crashes | Builds and debugs the runtime from source |
+| Level | Knowledge profile                                                             | Can do                                                                               | Source code comfort                                               |
+| ----- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| 1     | Knows C# syntax, basic OOP, uses Visual Studio / CLI                          | Build CRUD apps, use NuGet packages, follow tutorials                                | Never looked at runtime source                                    |
+| 2     | Understands generics, async/await patterns, DI, middleware pipeline           | Design multi-layer applications, write unit tests, use EF Core                       | Occasionally reads .NET source on GitHub to understand a behavior |
+| 3     | Understands memory model, `Span<T>`, performance profiling, custom middleware | Optimize hot paths, diagnose memory leaks, write custom middleware/filters           | Reads BCL source regularly to understand implementation details   |
+| 4     | Understands JIT tiering, GC generations/regions, `MethodTable`, type loading  | Tune GC for production workloads, analyze JIT output, use `EventPipe`/`dotnet-trace` | Navigates `src/coreclr/` and `src/libraries/` fluently            |
+| 5     | Understands VM internals, object layout, P/Invoke marshalling, crossgen2/R2R  | Contribute to dotnet/runtime, write custom hosts, debug native crashes               | Builds and debugs the runtime from source                         |
 
 ---
 
@@ -137,11 +137,13 @@ Explanation of the concept in clear, progressive prose. Use analogies where they
 
 **In the source code:**  
 Point to the exact file(s) and describe what to look at:
+
 - `src/path/to/file.cs` → lines ~{start}-{end}: {what to look for}
 - `src/path/to/other.cpp` → the `MethodName()` function: {why it matters}
 
 **Hands-on exercise:**  
 A concrete task the learner should do. This varies by level:
+
 - Levels 1-2: Write code, run it, observe behavior
 - Levels 3-4: Read source code, set breakpoints in BCL, use diagnostic tools
 - Level 5: Modify runtime source, build, test, observe the change
@@ -158,11 +160,11 @@ A widespread incorrect belief about this topic and why it's wrong, with source e
 A curated list of source files to read for this module, **in the order they should be read**, with annotations:
 
 ```markdown
-| Order | File | What to focus on | Difficulty |
-|-------|------|-----------------|------------|
-| 1 | `src/libraries/Microsoft.Extensions.DependencyInjection/src/ServiceProvider.cs` | Constructor logic, how the service table is built | ⭐⭐ |
-| 2 | `src/libraries/Microsoft.Extensions.DependencyInjection/src/ServiceLookup/CallSiteFactory.cs` | How DI resolves which constructor to call | ⭐⭐⭐ |
-| 3 | `src/coreclr/vm/methodtable.cpp` | How the runtime represents types at the native level | ⭐⭐⭐⭐⭐ |
+| Order | File                                                                                          | What to focus on                                     | Difficulty |
+| ----- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------- |
+| 1     | `src/libraries/Microsoft.Extensions.DependencyInjection/src/ServiceProvider.cs`               | Constructor logic, how the service table is built    | ⭐⭐       |
+| 2     | `src/libraries/Microsoft.Extensions.DependencyInjection/src/ServiceLookup/CallSiteFactory.cs` | How DI resolves which constructor to call            | ⭐⭐⭐     |
+| 3     | `src/coreclr/vm/methodtable.cpp`                                                              | How the runtime represents types at the native level | ⭐⭐⭐⭐⭐ |
 ```
 
 Difficulty scale: ⭐ (readable C#) to ⭐⭐⭐⭐⭐ (dense C++ requiring VM knowledge).
@@ -172,11 +174,11 @@ Difficulty scale: ⭐ (readable C#) to ⭐⭐⭐⭐⭐ (dense C++ requiring VM k
 Tools the learner should use at this level to validate their understanding:
 
 ```markdown
-| Tool / Command | What it reveals | When to use it |
-|---|---|---|
-| `dotnet-dump analyze` | Heap state, object references | When diagnosing memory issues |
+| Tool / Command                | What it reveals                     | When to use it                       |
+| ----------------------------- | ----------------------------------- | ------------------------------------ |
+| `dotnet-dump analyze`         | Heap state, object references       | When diagnosing memory issues        |
 | `DOTNET_JitDisasm=MethodName` | JIT-generated assembly for a method | When understanding JIT optimizations |
-| `dotnet-trace collect` | EventPipe traces | When profiling runtime behavior |
+| `dotnet-trace collect`        | EventPipe traces                    | When profiling runtime behavior      |
 ```
 
 For Levels 1-2, focus on `dotnet` CLI, Visual Studio debugger, and basic logging.  
@@ -188,13 +190,15 @@ A set of **questions and micro-challenges** the learner should be able to answer
 
 ```markdown
 #### Knowledge check:
+
 1. [Question that tests conceptual understanding]
-   <details><summary>Answer</summary>Explanation referencing specific source code.</details>
+    <details><summary>Answer</summary>Explanation referencing specific source code.</details>
 
 2. [Question that tests ability to navigate source]
-   <details><summary>Answer</summary>The relevant code is in `src/...` because...</details>
+    <details><summary>Answer</summary>The relevant code is in `src/...` because...</details>
 
 #### Practical challenge:
+
 - [A task that takes 30-60 minutes and produces an observable result]
 ```
 
@@ -204,12 +208,15 @@ Minimum 5 knowledge checks + 1 practical challenge per module.
 
 ```markdown
 #### ⬆️ Next module:
+
 - [Level {N+1}: {Title}]({path}) — what it adds on top of this module
 
-#### ⬇️ Previous module:  
+#### ⬇️ Previous module:
+
 - [Level {N-1}: {Title}]({path}) — what this module builds upon
 
 #### ↔️ Related modules:
+
 - [{Related topic}]({path}) — why it's related
 ```
 
@@ -218,15 +225,17 @@ Minimum 5 knowledge checks + 1 practical challenge per module.
 Terms introduced in this module. Format per language policy:
 
 **English file:**
+
 ```markdown
 | Term (EN) | Término (ES) | Definition |
-|---|---|---|
+| --------- | ------------ | ---------- |
 ```
 
 **Spanish file:**
+
 ```markdown
 | Término (ES) | Term (EN) | Definición |
-|---|---|---|
+| ------------ | --------- | ---------- |
 ```
 
 ### 10. REFERENCES
@@ -234,11 +243,11 @@ Terms introduced in this module. Format per language policy:
 Links to official documentation, blog posts, conference talks, and GitHub issues/PRs that are especially illuminating for this module's topics:
 
 ```markdown
-| Resource | Type | Why it's useful |
-|---|---|---|
+| Resource                                                                            | Type        | Why it's useful                                |
+| ----------------------------------------------------------------------------------- | ----------- | ---------------------------------------------- |
 | [.NET Runtime Design Docs](https://github.com/dotnet/runtime/tree/main/docs/design) | Design docs | Official design rationale for runtime features |
-| [Pro .NET Memory Management — Konrad Kokosa] | Book | Deep coverage of GC internals |
-| [Adam Sitnik — Span<T>](https://adamsitnik.com/Span/) | Blog post | Practical performance guide to Span |
+| [Pro .NET Memory Management — Konrad Kokosa]                                        | Book        | Deep coverage of GC internals                  |
+| [Adam Sitnik — Span<T>](https://adamsitnik.com/Span/)                               | Blog post   | Practical performance guide to Span            |
 ```
 
 ---
@@ -251,31 +260,38 @@ When the input is `"index"`, generate a master table of contents across all leve
 # .NET Runtime Learning Path — Master Index
 
 ## How to use this path
+
 {2-3 paragraphs explaining the level system, self-assessment, and how to navigate}
 
 ## Self-Assessment: Find your level
+
 {A decision tree or questionnaire that helps the developer identify their current level}
 
 ## Path Overview
 
 ### Level 1 — Foundations
-| Module | Topic | Est. effort | Key question it answers |
-|---|---|---|---|
-| 1.1 | .NET Ecosystem Overview | 2h | What are the runtime, SDK, BCL, and how do they relate? |
-| 1.2 | Project Structure and Build | 3h | What happens when I run `dotnet build`? |
-| ... | ... | ... | ... |
+
+| Module | Topic                       | Est. effort | Key question it answers                                 |
+| ------ | --------------------------- | ----------- | ------------------------------------------------------- |
+| 1.1    | .NET Ecosystem Overview     | 2h          | What are the runtime, SDK, BCL, and how do they relate? |
+| 1.2    | Project Structure and Build | 3h          | What happens when I run `dotnet build`?                 |
+| ...    | ...                         | ...         | ...                                                     |
 
 ### Level 2 — Practitioner
+
 | Module | Topic | Est. effort | Key question it answers |
-|---|---|---|---|
+| ------ | ----- | ----------- | ----------------------- |
 
 ### Level 3 — Advanced
+
 ...
 
 ### Level 4 — Internals
+
 ...
 
 ### Level 5 — Expert / Contributor
+
 ...
 ```
 
@@ -284,6 +300,7 @@ When the input is `"index"`, generate a master table of contents across all leve
 ## RULES
 
 ### Content rules
+
 1. **Source-first**: Every concept must be connected to a concrete source code location. The source is the textbook.
 2. **Progressive disclosure**: Never reference Level 4/5 concepts in Level 1/2 content without explicitly marking it as a "preview" or "you'll learn this later" callout.
 3. **No hand-waving**: If a concept is important enough to mention, it's important enough to explain. Don't say "this is complex, we'll skip it" — either explain it at the appropriate level or defer to a specific future module.
@@ -292,6 +309,7 @@ When the input is `"index"`, generate a master table of contents across all leve
 6. **Version awareness**: Target .NET 8. Note significant changes from .NET 6/7 where relevant. Flag .NET 9 changes as forward-looking when helpful.
 
 ### Pedagogy rules
+
 7. **Concrete before abstract**: Show the code/behavior first, then explain the principle. Never open a lesson with a definition.
 8. **One concept per lesson**: Each lesson introduces exactly one core concept. Supporting details are fine, but the lesson should have a single "aha moment."
 9. **Exercises are not optional**: Every lesson has a hands-on component. Reading source code counts as hands-on at Levels 3+.
@@ -299,6 +317,7 @@ When the input is `"index"`, generate a master table of contents across all leve
 11. **Misconceptions are gold**: Actively hunt for and correct common misconceptions. These are often the most valuable parts of the learning path.
 
 ### Format rules
+
 12. **Mermaid diagrams**: Use the color scheme defined in section 3 (CONCEPT MAP). Max 15 nodes per diagram.
 13. **Code blocks**: Use actual language identifiers (`csharp`, `cpp`, `c`, `bash`, `xml`, `json`).
 14. **File references**: Always relative to repo root.
@@ -377,3 +396,8 @@ Input: "How does Kestrel process an HTTP request?"
 **Spanish**: Natural technical Spanish, Latin American conventions. Mentor tone — uses "vos/tú" informally where natural (e.g., "cuando ejecutás `dotnet run`, lo que pasa internamente es..."). Keeps borrowed English terms when they're standard in the community.
 
 The overall voice should convey: "I've spent years reading this code and I'm going to save you time by showing you exactly where to look and what to pay attention to."
+
+## RESUME CLAUDE
+
+Resume this session with:
+claude --resume c9c1350f-bd99-4819-8c44-a46fd70d06d3
