@@ -39,6 +39,14 @@ In addition to the rules enforced by `.editorconfig`, you SHOULD:
 - When writing tests, do not emit "Act", "Arrange" or "Assert" comments.
 - For markdown (`.md`) files, ensure there is no trailing whitespace at the end of any line.
 - When adding XML documentation to APIs, follow the guidelines at [`docs.prompt.md`](/.github/prompts/docs.prompt.md).
+- Prefix `[ThreadStatic]` fields with `t_` (e.g., `t_cachedBuffer`). Instance fields use `_`, static fields use `s_`.
+- Use `LibraryImport` (source-generated) instead of `DllImport` for new P/Invoke declarations.
+- For new non-public helper types, prefer `static` for stateless helpers and `sealed` when inheritance is not intended.
+- New C# files must include the file header:
+  ```csharp
+  // Licensed to the .NET Foundation under one or more agreements.
+  // The .NET Foundation licenses this file to you under the MIT license.
+  ```
 
 When NOT running under CCA, guidance for creating commits and pushing changes:
 
@@ -55,6 +63,60 @@ When posting any content to GitHub under a user's credentials — opening PRs, c
 This applies to all GitHub interactions: PR descriptions, issue bodies, comments, review comments, etc. Exceptions:
 - The account is a recognized bot or Copilot app account (e.g., `github-actions[bot]`, `copilot`), where the AI origin is already apparent from the account identity.
 - The user explicitly asks you to omit the disclosure.
+
+---
+
+# Repository Architecture
+
+The repository has three major components:
+
+- **CoreCLR** (`src/coreclr/`): The primary .NET execution engine — JIT compiler (RyuJIT), garbage collector, type system. Written in C/C++.
+- **Mono** (`src/mono/`): A lightweight alternative runtime for mobile (iOS/Android), WebAssembly, and constrained environments.
+- **Libraries** (`src/libraries/`): The managed class libraries (BCL) — `System.Collections`, `System.Net.Http`, `System.Text.Json`, etc. Built on top of either runtime.
+- **Host** (`src/native/corehost/`, `src/installer/`): The native `dotnet` executable that bootstraps the runtime.
+
+**System.Private.CoreLib** is special: its runtime-agnostic code lives in `src/libraries/System.Private.CoreLib/`, but each runtime has its own counterpart (`src/coreclr/System.Private.CoreLib/`, `src/mono/System.Private.CoreLib/`). It must be built in the same configuration as its runtime.
+
+## Library Project Layout
+
+Each library under `src/libraries/<LibraryName>/` follows this structure:
+
+| Directory | Purpose |
+|-----------|---------|
+| `ref/` | Reference assembly — public API surface only. Must be updated when adding public APIs. |
+| `src/` | Implementation source code |
+| `tests/` | Test projects (may contain `UnitTests/`, `FunctionalTests/` subdirectories) |
+| `gen/` | Source generators (if any) |
+
+Use `$(NetCoreAppCurrent)` (e.g., `net11.0`) as the target framework — never hardcode TFM versions. For the full list of MSBuild properties (`$(TargetOS)`, `$(TargetArchitecture)`, etc.), see [project-guidelines.md](/docs/coding-guidelines/project-guidelines.md).
+
+## Important Correctness Warnings
+
+- **Public API changes** require updating both `ref/` and `src/` consistently. Missing ref updates will cause build failures.
+- **Shared/conditioned files**: A change in `src/libraries/` may affect multiple TFMs or OSes via `Condition` attributes in `.csproj` files. Check conditions before assuming scope.
+- **Don't hand-edit generated code** (files ending in `.g.cs`, `gen/` output, generated ref source) — modify the source/input instead.
+- **CoreLib cross-runtime**: When editing shared CoreLib code, check for runtime-specific counterparts in `src/coreclr/` and `src/mono/`.
+
+## Platform-Specific Code Conventions
+
+When code differs by platform, prefer (in order):
+
+1. **Partial classes with platform-specific files**: e.g., `Stream.Unix.cs`, `Stream.Windows.cs`
+2. **Entirely separate files**: when the whole class differs per platform
+3. **`#if` directives**: last resort
+
+Native interop uses a nested static class pattern — see [interop-guidelines.md](/docs/coding-guidelines/interop-guidelines.md):
+
+```csharp
+internal static partial class Interop
+{
+    internal static partial class Kernel32
+    {
+        [LibraryImport(Libraries.Kernel32)]
+        internal static partial int GetCurrentProcessId();
+    }
+}
+```
 
 ---
 
